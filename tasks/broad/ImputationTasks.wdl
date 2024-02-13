@@ -69,7 +69,7 @@ task GenerateChunk {
     Int disk_size_gb = ceil(2*size(vcf, "GiB")) + 50 # not sure how big the disk size needs to be since we aren't downloading the entire VCF here
     Int cpu = 1
     Int memory_mb = 8000
-    String gatk_docker = "jsotoimputation.azurecr.io/broad-gatk/gatk:4.2.6.1"
+    String gatk_docker = "jsotoimputation.azurecr.io/broad-gatk/gatk:4.2.6.1_squashed"
   }
   Int command_mem = memory_mb - 1000
   Int max_heap = memory_mb - 500
@@ -118,7 +118,7 @@ task CountVariantsInChunks {
     File panel_vcf
     File panel_vcf_index
 
-    String gatk_docker = "jsotoimputation.azurecr.io/broad-gatk/gatk:4.2.6.1"
+    String gatk_docker = "jsotoimputation.azurecr.io/broad-gatk/gatk:4.2.6.1_squashed"
     Int cpu = 1
     Int memory_mb = 4000
     Int disk_size_gb = 2 * ceil(size([vcf, vcf_index, panel_vcf, panel_vcf_index], "GiB")) + 20
@@ -156,7 +156,7 @@ task CheckChunks {
     Int var_in_reference
 
     Int disk_size_gb = ceil(2*size([vcf, vcf_index, panel_vcf, panel_vcf_index], "GiB"))
-    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623"
+    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623_squashed"
     Int cpu = 1
     Int memory_mb = 4000
   }
@@ -198,7 +198,7 @@ task PhaseVariantsEagle {
     Int start
     Int end
 
-    String eagle_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-eagle:1.0.0-2.4-1633695564"
+    String eagle_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-eagle:1.0.0-2.4-1633695564_squashed"
     Int cpu = 8
     Int memory_mb = 32000
     Int disk_size_gb = ceil(3 * size([dataset_bcf, reference_panel_bcf, dataset_bcf_index, reference_panel_bcf_index], "GiB")) + 50
@@ -237,7 +237,7 @@ task Minimac4 {
     Int end
     Int window
 
-    String minimac4_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-minimac4:1.0.5-1.0.2-1649949471"
+    String minimac4_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-minimac4:1.0.5-1.0.2-1649949471_squashed"
     Int cpu = 1
     Int memory_mb = 4000
     Int disk_size_gb = ceil(size(ref_panel, "GiB") + 2*size(phased_vcf, "GiB")) + 50
@@ -280,7 +280,7 @@ task GatherVcfs {
     Array[File] input_vcfs
     String output_vcf_basename
 
-    String gatk_docker = "jsotoimputation.azurecr.io/broad-gatk/gatk:4.2.6.1"
+    String gatk_docker = "jsotoimputation.azurecr.io/broad-gatk/gatk:4.2.6.1_squashed"
     Int cpu = 1
     Int memory_mb = 16000
     Int disk_size_gb = ceil(3*size(input_vcfs, "GiB"))
@@ -320,7 +320,7 @@ task ReplaceHeader {
     File vcf_to_replace_header
     File vcf_with_new_header
 
-    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.4-1.10.2-0.1.16-1646091598"
+    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.4-1.10.2-0.1.16-1646091598_squashed"
   }
 
   String output_name = basename(vcf_to_replace_header,".vcf.gz") + ".new_header.vcf.gz"
@@ -354,7 +354,7 @@ task UpdateHeader {
     String basename
 
     Int disk_size_gb = ceil(4*(size(vcf, "GiB") + size(vcf_index, "GiB"))) + 20
-    String gatk_docker = "jsotoimputation.azurecr.io/broad-gatk/gatk:4.2.6.1"
+    String gatk_docker = "jsotoimputation.azurecr.io/broad-gatk/gatk:4.2.6.1_squashed"
     Int cpu = 1
     Int memory_mb = 8000
   }
@@ -392,7 +392,7 @@ task RemoveSymbolicAlleles {
     String output_basename
 
     Int disk_size_gb = ceil(3*(size(original_vcf, "GiB") + size(original_vcf_index, "GiB")))
-    String gatk_docker = "jsotoimputation.azurecr.io/broad-gatk/gatk:4.2.6.1"
+    String gatk_docker = "jsotoimputation.azurecr.io/broad-gatk/gatk:4.2.6.1_squashed"
     Int cpu = 1
     Int memory_mb = 4000
   }
@@ -424,7 +424,7 @@ task SeparateMultiallelics {
     String output_basename
 
     Int disk_size_gb =  ceil(2*(size(original_vcf, "GiB") + size(original_vcf_index, "GiB")))
-    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623"
+    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623_squashed"
     Int cpu = 1
     Int memory_mb = 4000
   }
@@ -456,7 +456,7 @@ task OptionalQCSites {
     Float? optional_qc_max_missing
     Float? optional_qc_hwe
 
-    String bcftools_vcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623"
+    String bcftools_vcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623_squashed"
     Int cpu = 1
     Int memory_mb = 16000
     Int disk_size_gb = ceil(2*(size(input_vcf, "GiB") + size(input_vcf_index, "GiB")))
@@ -491,7 +491,7 @@ task MergeSingleSampleVcfs {
     Array[File] input_vcf_indices
     String output_vcf_basename
 
-    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623"
+    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623_squashed"
     Int memory_mb = 2000
     Int cpu = 1
     Int disk_size_gb = 3 * ceil(size(input_vcfs, "GiB") + size(input_vcf_indices, "GiB")) + 20
@@ -532,7 +532,7 @@ task CountSamples {
   input {
     File vcf
 
-    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623"
+    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623_squashed"
     Int cpu = 1
     Int memory_mb = 3000
     Int disk_size_gb = 100 + ceil(size(vcf, "GiB"))
@@ -695,7 +695,7 @@ task SubsetVcfToRegion {
     Int disk_size_gb = ceil(2*size(vcf, "GiB")) + 50 # not sure how big the disk size needs to be since we aren't downloading the entire VCF here
     Int cpu = 1
     Int memory_mb = 8000
-    String gatk_docker = "jsotoimputation.azurecr.io/broad-gatk/gatk:4.1.9.0"
+    String gatk_docker = "jsotoimputation.azurecr.io/broad-gatk/gatk:4.1.9.0_squashed"
   }
   Int command_mem = memory_mb - 1000
   Int max_heap = memory_mb - 500
@@ -740,7 +740,7 @@ task SetIDs {
     File vcf
     String output_basename
 
-    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623"
+    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623_squashed"
     Int cpu = 1
     Int memory_mb = 4000
     Int disk_size_gb = 100 + ceil(2.2 * size(vcf, "GiB"))
@@ -770,7 +770,7 @@ task ExtractIDs {
     String output_basename
 
     Int disk_size_gb = 2*ceil(size(vcf, "GiB")) + 100
-    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623"
+    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623_squashed"
     Int cpu = 1
     Int memory_mb = 4000
   }
@@ -797,7 +797,7 @@ task SelectVariantsByIds {
     File ids
     String basename
 
-    String gatk_docker = "jsotoimputation.azurecr.io/broad-gatk/gatk:4.2.6.1"
+    String gatk_docker = "jsotoimputation.azurecr.io/broad-gatk/gatk:4.2.6.1_squashed"
     Int cpu = 1
     Int memory_mb = 16000
     Int disk_size_gb = ceil(1.2*size(vcf, "GiB")) + 100
@@ -841,7 +841,7 @@ task RemoveAnnotations {
     File vcf
     String basename
 
-    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623"
+    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623_squashed"
     Int cpu = 1
     Int memory_mb = 3000
     Int disk_size_gb = ceil(2.2*size(vcf, "GiB")) + 100
@@ -871,7 +871,7 @@ task InterleaveVariants {
     Array[File] vcfs
     String basename
 
-    String gatk_docker = "jsotoimputation.azurecr.io/broad-gatk/gatk:4.2.6.1"
+    String gatk_docker = "jsotoimputation.azurecr.io/broad-gatk/gatk:4.2.6.1_squashed"
     Int cpu = 1
     Int memory_mb = 16000
     Int disk_size_gb = ceil(3.2*size(vcfs, "GiB")) + 100
@@ -929,7 +929,7 @@ task SplitMultiSampleVcf {
  input {
     File multiSampleVcf
 
-    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623"
+    String bcftools_docker = "jsotoimputation.azurecr.io/broad-gotc-prod/imputation-bcf-vcf:1.0.5-1.10.2-0.1.16-1649948623_squashed"
     Int cpu = 1
     Int memory_mb = 8000
     Int disk_size_gb = ceil(3*size(multiSampleVcf, "GiB")) + 100
