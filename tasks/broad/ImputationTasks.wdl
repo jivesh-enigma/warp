@@ -283,7 +283,7 @@ task GatherVcfs {
     String gatk_docker = "jsotoimputation.azurecr.io/broad-gatk/gatk:4.2.6.1_squashed"
     Int cpu = 1
     Int memory_mb = 16000
-    Int disk_size_gb = ceil(3*size(input_vcfs, "GiB"))
+    Int disk_size_gb = ceil(9*size(input_vcfs, "GiB"))
   }
   Int command_mem = memory_mb - 1000
   Int max_heap = memory_mb - 500
